@@ -1,7 +1,7 @@
 ########
 # assets builder and dev server
 #
-FROM node:8-slim AS assets
+FROM node:12-slim AS assets
 
 ENV PATH=/app/node_modules/.bin:$PATH
 WORKDIR /app
@@ -11,13 +11,12 @@ COPY package.json yarn.lock ./
 
 # install dependencies
 RUN yarn install --pure-lockfile
-RUN yarn global add gulp-cli@2.0.1
 
 # copy supporting files and media
-COPY .eslintrc.js .stylelintrc gulpfile.js ./
+COPY .eslintrc.js .stylelintrc webpack.config.js webpack.static.config.js ./
 COPY ./media ./media
 
-RUN gulp build --production
+RUN npm run build
 
 
 ########
@@ -117,7 +116,7 @@ USER webdev
 #
 FROM app-base AS release
 
-COPY --from=assets /app/static_final /app/static_final
+COPY --from=assets /app/assets /app/assets
 RUN honcho run --env docker/envfiles/prod.env docker/bin/build_staticfiles.sh
 
 # build args

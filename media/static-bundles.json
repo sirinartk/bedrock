@@ -1406,6 +1406,12 @@
         "js/base/error-pages.js"
       ],
       "name": "page_not_found"
+    },
+    {
+      "files": [
+        "js/libs/html5shiv.js"
+      ],
+      "name": "html5-shiv"
     }
   ]
 }

@@ -6,25 +6,21 @@
   "dependencies": {
     "@mozilla-protocol/core": "^11.0.2",
     "@mozilla-protocol/eslint-config": "^1.1.0",
-    "ansi-colors": "4.1.1",
     "clean-css-cli": "4.3.0",
-    "del": "5.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.1",
+    "css-loader": "^3.5.3",
     "eslint": "6.3.0",
-    "gulp": "4.0.2",
-    "gulp-cached": "^1.1.1",
-    "gulp-clean-css": "4.2.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-eslint": "6.0.0",
-    "gulp-filter": "6.0.0",
-    "gulp-if": "3.0.0",
-    "gulp-jsonlint": "^1.3.1",
-    "gulp-sass": "^4.0.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-stylelint": "9.0.0",
-    "gulp-uglify": "^3.0.0",
-    "merge-stream": "2.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
     "stylelint": "^10.1.0",
-    "yargs": "14.0.0"
+    "uglify-js": "^3.9.4",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge-and-include-globally": "^2.1.24"
   },
   "repository": {
     "type": "git",
@@ -36,7 +32,9 @@
     "url": "https://bugzilla.mozilla.org/"
   },
   "devDependencies": {
-    "browser-sync": "2.26.7",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "cache-loader": "^4.1.0",
     "concurrently": "4.1.2",
     "eslint-plugin-jquery": "^1.5.1",
     "jasmine-core": "3.4.0",
@@ -48,10 +46,12 @@
     "svgo": "^1.2.2",
     "tinypng-cli": "^0.0.7"
   },
-  "bin": {
-    "browser-sync": "/.bin/browser-sync"
-  },
   "scripts": {
-    "start": "concurrently --kill-others \"python manage.py runserver 0.0.0.0:8080\" \"gulp\""
+    "start": "concurrently --kill-others \"python manage.py runserver 0.0.0.0:8080\" \"npm run watch\"",
+    "static": "NODE_ENV=production webpack --config webpack.static.config.js --display minimal --bail",
+    "prebuild": "npm run static",
+    "build": "NODE_ENV=production webpack --display minimal --bail",
+    "prewatch": "npm run static",
+    "watch": "NODE_ENV=development webpack --watch --display minimal --bail"
   }
 }

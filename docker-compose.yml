@@ -10,12 +10,13 @@ services:
       context: .
       target: assets
     image: mozmeao/bedrock_assets:${GIT_COMMIT:-latest}
-    command: gulp
+    command: npm run watch
     ports:
       - "8000-8010:8000-8010"
     volumes:
       - ./media/:/app/media:delegated
       - ./bedrock/:/app/bedrock:delegated
+      - assets_volume:/app/assets
     environment:
       BS_PROXY_URL: "app:8080"
       BS_OPEN_BROWSER: "false"
@@ -45,6 +46,7 @@ services:
       - ./locale/:/app/locale:delegated
       - ./l10n/:/app/l10n:delegated
       - ./git-repos/:/app/git-repos:delegated
+      - assets_volume:/app/assets
 
   # run the tests against local changes
   test:
@@ -110,3 +112,6 @@ services:
       context: .
       target: app-base
     image: mozmeao/bedrock_code:${GIT_COMMIT:-latest}
+
+volumes:
+  assets_volume:
